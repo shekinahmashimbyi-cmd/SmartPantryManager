@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.database.Cursor;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -57,4 +58,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return result != -1;
     }
+
+public Cursor getAllPantryItems() {
+
+    SQLiteDatabase db = this.getReadableDatabase();
+
+    return db.rawQuery(
+            "SELECT * FROM " + TABLE_PANTRY,
+            null
+    );
+}
 }

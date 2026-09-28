@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,6 +19,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         findViewById(R.id.addItemButton).setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, AddItemActivity.class);
+            startActivity(intent);
+        });
+        Button myPantryButton = findViewById(R.id.myPantryButton);
+
+        myPantryButton.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, MyPantryActivity.class);
             startActivity(intent);
         });
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
