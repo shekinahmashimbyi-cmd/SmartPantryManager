@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <Button
+            android:id="@+id/backToRecipesButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="← Back to Recipes"
+            android:textAllCaps="false" />
+
+        <TextView
+            android:id="@+id/recipeNameText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Recipe Name"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:textColor="#800020"
+            android:gravity="center"
+            android:layout_marginTop="30dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ingredients"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="#800020"
+            android:layout_marginTop="32dp" />
+
+        <TextView
+            android:id="@+id/ingredientsText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ingredients will appear here"
+            android:textSize="16sp"
+            android:lineSpacingExtra="6dp"
+            android:layout_marginTop="12dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Instructions"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="#800020"
+            android:layout_marginTop="32dp" />
+
+        <TextView
+            android:id="@+id/instructionsText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Instructions will appear here"
+            android:textSize="16sp"
+            android:lineSpacingExtra="6dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="30dp" />
+
+    </LinearLayout>
+
+</ScrollView>

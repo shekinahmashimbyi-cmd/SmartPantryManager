@@ -1,6 +1,5 @@
 package com.example.smartpantrymanager;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.activity.EdgeToEdge;
@@ -8,29 +7,32 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import android.widget.Button;
-
-public class MainActivity extends AppCompatActivity {
+import android.content.Intent;
+public class SuggestedRecipesActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_main);
-        findViewById(R.id.addItemButton).setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, AddItemActivity.class);
+        setContentView(R.layout.activity_suggested_recipes);
+        findViewById(R.id.pastaRecipeButton).setOnClickListener(v -> {
+            Intent intent = new Intent(SuggestedRecipesActivity.this, RecipeDetailActivity.class);
+            intent.putExtra("recipeName", "Creamy Pasta");
             startActivity(intent);
         });
-        Button myPantryButton = findViewById(R.id.myPantryButton);
 
-        myPantryButton.setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, MyPantryActivity.class);
+        findViewById(R.id.omeletteRecipeButton).setOnClickListener(v -> {
+            Intent intent = new Intent(SuggestedRecipesActivity.this, RecipeDetailActivity.class);
+            intent.putExtra("recipeName", "Cheese Omelette");
             startActivity(intent);
         });
-        findViewById(R.id.shoppingListButton).setOnClickListener(v -> {
-            Intent intent = new Intent(MainActivity.this, SuggestedRecipesActivity.class);
+
+        findViewById(R.id.sandwichRecipeButton).setOnClickListener(v -> {
+            Intent intent = new Intent(SuggestedRecipesActivity.this, RecipeDetailActivity.class);
+            intent.putExtra("recipeName", "Fresh Veggie Sandwich");
             startActivity(intent);
         });
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
