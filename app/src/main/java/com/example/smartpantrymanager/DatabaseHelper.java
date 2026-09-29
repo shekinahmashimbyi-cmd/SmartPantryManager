@@ -468,4 +468,134 @@ public Cursor getAllPantryItems() {
                 new String[]{String.valueOf(recipeId)}
         );
     }
+    public boolean pantryHasIngredient(String ingredientName,
+                                       double requiredQuantity,
+                                       String requiredUnit) {
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(
+                "SELECT * FROM " + TABLE_PANTRY +
+                        " WHERE LOWER(" + COL_NAME + ") = LOWER(?)",
+                new String[]{ingredientName}
+        );
+
+        boolean enoughIngredient = false;
+
+        if (cursor.moveToFirst()) {
+
+            int quantityColumn = cursor.getColumnIndexOrThrow(COL_QUANTITY);
+            int unitColumn = cursor.getColumnIndexOrThrow(COL_UNIT);
+
+            do {
+
+                double pantryQuantity = cursor.getDouble(quantityColumn);
+                String pantryUnit = cursor.getString(unitColumn);
+
+                double convertedPantryQuantity =
+                        convertQuantity(pantryQuantity, pantryUnit, requiredUnit);
+
+                if (convertedPantryQuantity >= requiredQuantity) {
+                    enoughIngredient = true;
+                    break;
+                }
+
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+
+        return enoughIngredient;
+    }
+
+    private double convertQuantity(double quantity,
+                                   String fromUnit,
+                                   String toUnit) {
+
+        if (fromUnit.equalsIgnoreCase(toUnit)) {
+            return quantity;
+        }
+
+        // kg to g
+        if (fromUnit.equalsIgnoreCase("kg")
+                && toUnit.equalsIgnoreCase("g")) {
+
+            return quantity * 1000;
+        }
+
+        // g to kg
+        if (fromUnit.equalsIgnoreCase("g")
+                && toUnit.equalsIgnoreCase("kg")) {
+
+            return quantity / 1000;
+        }
+
+        // L to ml
+        if (fromUnit.equalsIgnoreCase("L")
+                && toUnit.equalsIgnoreCase("ml")) {
+
+            return quantity * 1000;
+        }
+
+        // ml to L
+        if (fromUnit.equalsIgnoreCase("ml")
+                && toUnit.equalsIgnoreCase("L")) {
+
+            return quantity / 1000;
+        }
+
+        // Units are incompatible
+        return -1;
+    }
+
+    public boolean canMakeRecipe(int recipeId) {
+
+        Cursor cursor = getRecipeIngredients(recipeId);
+
+        if (!cursor.moveToFirst()) {
+            cursor.close();
+            return false;
+        }
+
+        int nameColumn = cursor.getColumnIndexOrThrow(
+                COL_INGREDIENT_NAME
+        );
+
+        int quantityColumn = cursor.getColumnIndexOrThrow(
+                COL_REQUIRED_QUANTITY
+        );
+
+        int unitColumn = cursor.getColumnIndexOrThrow(
+                COL_REQUIRED_UNIT
+        );
+
+        do {
+
+            String ingredientName =
+                    cursor.getString(nameColumn);
+
+            double requiredQuantity =
+                    cursor.getDouble(quantityColumn);
+
+            String requiredUnit =
+                    cursor.getString(unitColumn);
+
+            boolean ingredientAvailable =
+                    pantryHasIngredient(
+                            ingredientName,
+                            requiredQuantity,
+                            requiredUnit
+                    );
+
+            if (!ingredientAvailable) {
+                cursor.close();
+                return false;
+            }
+
+        } while (cursor.moveToNext());
+
+        cursor.close();
+
+        return true;
+    }
 }

@@ -13,6 +13,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
+import android.widget.TextView;
+import android.view.View;
 public class SuggestedRecipesActivity extends AppCompatActivity {
 
     @Override
@@ -20,9 +22,13 @@ public class SuggestedRecipesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_suggested_recipes);
+        findViewById(R.id.backToHomeButton).setOnClickListener(v -> {
+            finish();
+        });
         DatabaseHelper databaseHelper = new DatabaseHelper(this);
 
         ListView recipeListView = findViewById(R.id.recipeListView);
+        TextView noRecipesText = findViewById(R.id.noRecipesText);
 
         ArrayList<String> recipeNames = new ArrayList<>();
         ArrayList<Integer> recipeIds = new ArrayList<>();
@@ -41,13 +47,31 @@ public class SuggestedRecipesActivity extends AppCompatActivity {
 
             do {
 
-                recipeIds.add(cursor.getInt(idColumn));
-                recipeNames.add(cursor.getString(nameColumn));
+                int recipeId = cursor.getInt(idColumn);
+
+                if (databaseHelper.canMakeRecipe(recipeId)) {
+
+                    recipeIds.add(recipeId);
+                    recipeNames.add(
+                            cursor.getString(nameColumn)
+                    );
+                }
 
             } while (cursor.moveToNext());
         }
 
         cursor.close();
+
+        if (recipeNames.isEmpty()) {
+
+            noRecipesText.setVisibility(View.VISIBLE);
+            recipeListView.setVisibility(View.GONE);
+
+        } else {
+
+            noRecipesText.setVisibility(View.GONE);
+            recipeListView.setVisibility(View.VISIBLE);
+        }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 this,
