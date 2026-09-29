@@ -94,10 +94,11 @@ public class MyPantryActivity extends AppCompatActivity {
                 int quantity = cursor.getInt(2);
                 String category = cursor.getString(3);
                 String expiryDate = cursor.getString(4);
+                String unit = cursor.getString(5);
 
                 String itemDetails =
                         name +
-                                "\nQuantity: " + quantity +
+                                "\nQuantity: " + quantity + " " + unit +
                                 "\nCategory: " + category +
                                 "\nExpiry Date: " + expiryDate;
 

@@ -12,6 +12,8 @@ import android.widget.EditText;
 import android.widget.Button;
 import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
+import android.widget.Spinner;
+import android.widget.ArrayAdapter;
 
 public class EditItemActivity extends AppCompatActivity {
 
@@ -22,11 +24,36 @@ public class EditItemActivity extends AppCompatActivity {
         setContentView(R.layout.activity_edit_item);
         EditText itemNameInput = findViewById(R.id.editItemNameInput);
         EditText quantityInput = findViewById(R.id.editQuantityInput);
+        Spinner unitSpinner = findViewById(R.id.editUnitSpinner);
         EditText categoryInput = findViewById(R.id.editCategoryInput);
         EditText expiryDateInput = findViewById(R.id.editExpiryDateInput);
         Button updateItemButton = findViewById(R.id.updateItemButton);
         Button backToPantryButton = findViewById(R.id.backToPantryButton);
         Button deleteItemButton = findViewById(R.id.deleteItemButton);
+
+        String[] units = {
+                "Select Unit",
+                "Items",
+                "g",
+                "kg",
+                "ml",
+                "L",
+                "cups",
+                "tbsp",
+                "tsp"
+        };
+
+        ArrayAdapter<String> unitAdapter = new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_spinner_item,
+                units
+        );
+
+        unitAdapter.setDropDownViewResource(
+                android.R.layout.simple_spinner_dropdown_item
+        );
+
+        unitSpinner.setAdapter(unitAdapter);
 
         int itemId = getIntent().getIntExtra("itemId", -1);
 
@@ -40,9 +67,15 @@ public class EditItemActivity extends AppCompatActivity {
             int quantity = cursor.getInt(2);
             String category = cursor.getString(3);
             String expiryDate = cursor.getString(4);
+            String unit = cursor.getString(5);
 
             itemNameInput.setText(name);
             quantityInput.setText(String.valueOf(quantity));
+            int unitPosition = unitAdapter.getPosition(unit);
+
+            if (unitPosition >= 0) {
+                unitSpinner.setSelection(unitPosition);
+            }
             categoryInput.setText(category);
             expiryDateInput.setText(expiryDate);
         }
@@ -86,10 +119,12 @@ public class EditItemActivity extends AppCompatActivity {
 
             String name = itemNameInput.getText().toString().trim();
             String quantityText = quantityInput.getText().toString().trim();
+            String unit = unitSpinner.getSelectedItem().toString();
             String category = categoryInput.getText().toString().trim();
             String expiryDate = expiryDateInput.getText().toString().trim();
 
             if (name.isEmpty() || quantityText.isEmpty()
+                    || unit.equals("Select Unit")
                     || category.isEmpty() || expiryDate.isEmpty()) {
 
                 Toast.makeText(
@@ -107,6 +142,7 @@ public class EditItemActivity extends AppCompatActivity {
                     itemId,
                     name,
                     quantity,
+                    unit,
                     category,
                     expiryDate
             );

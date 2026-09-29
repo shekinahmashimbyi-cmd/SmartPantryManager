@@ -17,6 +17,7 @@ import android.widget.EditText;
 import java.util.Calendar;
 import android.widget.Button;
 import android.widget.Toast;
+import android.content.Intent;
 public class AddItemActivity extends AppCompatActivity {
 
     @Override
@@ -25,6 +26,7 @@ public class AddItemActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_add_item);
         Spinner categorySpinner = findViewById(R.id.categorySpinner);
+        Spinner unitSpinner = findViewById(R.id.unitSpinner);
 
         EditText itemNameInput = findViewById(R.id.itemNameInput);
         EditText quantityInput = findViewById(R.id.quantityInput);
@@ -54,6 +56,29 @@ public class AddItemActivity extends AppCompatActivity {
         );
 
         categorySpinner.setAdapter(categoryAdapter);
+        String[] units = {
+                "Select Unit",
+                "Items",
+                "g",
+                "kg",
+                "ml",
+                "L",
+                "cups",
+                "tbsp",
+                "tsp"
+        };
+
+        ArrayAdapter<String> unitAdapter = new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_spinner_item,
+                units
+        );
+
+        unitAdapter.setDropDownViewResource(
+                android.R.layout.simple_spinner_dropdown_item
+        );
+
+        unitSpinner.setAdapter(unitAdapter);
         EditText expiryDateInput = findViewById(R.id.expiryDateInput);
 
         expiryDateInput.setOnClickListener(v -> {
@@ -86,13 +111,16 @@ public class AddItemActivity extends AppCompatActivity {
 
                 String name = itemNameInput.getText().toString().trim();
                 String quantityText = quantityInput.getText().toString().trim();
+                String unit = unitSpinner.getSelectedItem().toString();
                 String category = categorySpinner.getSelectedItem().toString();
                 String expiryDate = expiryDateInput.getText().toString().trim();
 
                 if (name.isEmpty() ||
                         quantityText.isEmpty() ||
+                        unit.equals("Select Unit") ||
                         category.equals("Select Category") ||
                         expiryDate.isEmpty()) {
+
 
                     Toast.makeText(
                             AddItemActivity.this,
@@ -121,6 +149,7 @@ public class AddItemActivity extends AppCompatActivity {
                 boolean inserted = databaseHelper.addPantryItem(
                         name,
                         quantity,
+                        unit,
                         category,
                         expiryDate
                 );
@@ -133,10 +162,13 @@ public class AddItemActivity extends AppCompatActivity {
                             Toast.LENGTH_SHORT
                     ).show();
 
-                    itemNameInput.setText("");
-                    quantityInput.setText("");
-                    expiryDateInput.setText("");
-                    categorySpinner.setSelection(0);
+                    Intent intent = new Intent(
+                            AddItemActivity.this,
+                            MyPantryActivity.class
+                    );
+
+                    startActivity(intent);
+                    finish();
 
                 } else {
 
