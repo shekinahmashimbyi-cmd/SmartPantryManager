@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="24dp">
+
+    <Button
+        android:id="@+id/backToPantryButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Back"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="50dp" />
+
+    <TextView
+        android:id="@+id/editItemTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Edit Pantry Item"
+        android:textSize="26sp"
+        android:textStyle="bold"
+        android:textColor="#800020"
+        app:layout_constraintTop_toBottomOf="@id/backToPantryButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="10dp" />
+
+    <EditText
+        android:id="@+id/editItemNameInput"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Item Name"
+        android:inputType="text"
+        app:layout_constraintTop_toBottomOf="@id/editItemTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="30dp" />
+
+    <EditText
+        android:id="@+id/editQuantityInput"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Quantity"
+        android:inputType="number"
+        app:layout_constraintTop_toBottomOf="@id/editItemNameInput"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp" />
+
+    <EditText
+        android:id="@+id/editCategoryInput"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Category"
+        android:inputType="text"
+        app:layout_constraintTop_toBottomOf="@id/editQuantityInput"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp" />
+
+    <EditText
+        android:id="@+id/editExpiryDateInput"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Expiry Date"
+        android:focusable="false"
+        android:clickable="true"
+        app:layout_constraintTop_toBottomOf="@id/editCategoryInput"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp" />
+
+    <Button
+        android:id="@+id/updateItemButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Update Item"
+        app:layout_constraintTop_toBottomOf="@id/editExpiryDateInput"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="30dp" />
+
+    <Button
+        android:id="@+id/deleteItemButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Delete Item"
+        app:layout_constraintTop_toBottomOf="@id/updateItemButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="12dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -68,4 +68,44 @@ public Cursor getAllPantryItems() {
             null
     );
 }
+    public Cursor getPantryItemById(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        return db.rawQuery(
+                "SELECT * FROM " + TABLE_PANTRY + " WHERE " + COL_ID + " = ?",
+                new String[]{String.valueOf(id)}
+        );
+    }
+    public boolean updatePantryItem(int id, String name, int quantity,
+                                    String category, String expiryDate) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(COL_NAME, name);
+        values.put(COL_QUANTITY, quantity);
+        values.put(COL_CATEGORY, category);
+        values.put(COL_EXPIRY, expiryDate);
+
+        int rowsAffected = db.update(
+                TABLE_PANTRY,
+                values,
+                COL_ID + " = ?",
+                new String[]{String.valueOf(id)}
+        );
+
+        return rowsAffected > 0;
+    }
+    public boolean deletePantryItem(int id) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        int rowsDeleted = db.delete(
+                TABLE_PANTRY,
+                COL_ID + " = ?",
+                new String[]{String.valueOf(id)}
+        );
+
+        return rowsDeleted > 0;
+    }
 }

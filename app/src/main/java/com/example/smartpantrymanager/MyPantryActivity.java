@@ -11,10 +11,16 @@ import android.database.Cursor;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+import android.content.Intent;
+import android.widget.Button;
 
 import java.util.ArrayList;
 
 public class MyPantryActivity extends AppCompatActivity {
+    private DatabaseHelper databaseHelper;
+    private ArrayList<String> pantryItems;
+    private ArrayList<Integer> pantryItemIds;
+    private ArrayAdapter<String> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,12 +28,55 @@ public class MyPantryActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_my_pantry);
         ListView pantryListView = findViewById(R.id.pantryListView);
+        Button backToHomeButton = findViewById(R.id.backToHomeButton);
+        backToHomeButton.setOnClickListener(v -> {
+            finish();
+        });
 
-        DatabaseHelper databaseHelper = new DatabaseHelper(this);
+        databaseHelper = new DatabaseHelper(this);
 
-        ArrayList<String> pantryItems = new ArrayList<>();
+        pantryItems = new ArrayList<>();
+        pantryItemIds = new ArrayList<>();
+
+
+        adapter = new ArrayAdapter<>(
+                this,
+                android.R.layout.simple_list_item_1,
+                pantryItems
+        );
+
+        pantryListView.setAdapter(adapter);
+        pantryListView.setOnItemClickListener((parent, view, position, id) -> {
+
+            int selectedItemId = pantryItemIds.get(position);
+
+            Intent intent = new Intent(
+                    MyPantryActivity.this,
+                    EditItemActivity.class
+            );
+
+            intent.putExtra("itemId", selectedItemId);
+            startActivity(intent);
+
+        });
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadPantryItems();
+    }
+    private void loadPantryItems() {
+
+        pantryItems.clear();
+        pantryItemIds.clear();
 
         Cursor cursor = databaseHelper.getAllPantryItems();
+
         if (cursor.getCount() == 0) {
 
             Toast.makeText(
@@ -40,6 +89,7 @@ public class MyPantryActivity extends AppCompatActivity {
 
             while (cursor.moveToNext()) {
 
+                int id = cursor.getInt(0);
                 String name = cursor.getString(1);
                 int quantity = cursor.getInt(2);
                 String category = cursor.getString(3);
@@ -52,21 +102,11 @@ public class MyPantryActivity extends AppCompatActivity {
                                 "\nExpiry Date: " + expiryDate;
 
                 pantryItems.add(itemDetails);
+                pantryItemIds.add(id);
             }
         }
 
         cursor.close();
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                this,
-                android.R.layout.simple_list_item_1,
-                pantryItems
-        );
-
-        pantryListView.setAdapter(adapter);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
+        adapter.notifyDataSetChanged();
     }
 }
