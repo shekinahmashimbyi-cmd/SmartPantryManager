@@ -63,11 +63,25 @@ public class EditItemActivity extends AppCompatActivity {
 
         if (cursor.moveToFirst()) {
 
-            String name = cursor.getString(1);
-            int quantity = cursor.getInt(2);
-            String category = cursor.getString(3);
-            String expiryDate = cursor.getString(4);
-            String unit = cursor.getString(5);
+            String name = cursor.getString(
+                    cursor.getColumnIndexOrThrow(DatabaseHelper.COL_NAME)
+            );
+
+            int quantity = cursor.getInt(
+                    cursor.getColumnIndexOrThrow(DatabaseHelper.COL_QUANTITY)
+            );
+
+            String unit = cursor.getString(
+                    cursor.getColumnIndexOrThrow(DatabaseHelper.COL_UNIT)
+            );
+
+            String category = cursor.getString(
+                    cursor.getColumnIndexOrThrow(DatabaseHelper.COL_CATEGORY)
+            );
+
+            String expiryDate = cursor.getString(
+                    cursor.getColumnIndexOrThrow(DatabaseHelper.COL_EXPIRY)
+            );
 
             itemNameInput.setText(name);
             quantityInput.setText(String.valueOf(quantity));

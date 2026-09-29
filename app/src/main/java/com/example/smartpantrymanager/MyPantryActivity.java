@@ -89,12 +89,29 @@ public class MyPantryActivity extends AppCompatActivity {
 
             while (cursor.moveToNext()) {
 
-                int id = cursor.getInt(0);
-                String name = cursor.getString(1);
-                int quantity = cursor.getInt(2);
-                String category = cursor.getString(3);
-                String expiryDate = cursor.getString(4);
-                String unit = cursor.getString(5);
+                int id = cursor.getInt(
+                        cursor.getColumnIndexOrThrow(DatabaseHelper.COL_ID)
+                );
+
+                String name = cursor.getString(
+                        cursor.getColumnIndexOrThrow(DatabaseHelper.COL_NAME)
+                );
+
+                int quantity = cursor.getInt(
+                        cursor.getColumnIndexOrThrow(DatabaseHelper.COL_QUANTITY)
+                );
+
+                String unit = cursor.getString(
+                        cursor.getColumnIndexOrThrow(DatabaseHelper.COL_UNIT)
+                );
+
+                String category = cursor.getString(
+                        cursor.getColumnIndexOrThrow(DatabaseHelper.COL_CATEGORY)
+                );
+
+                String expiryDate = cursor.getString(
+                        cursor.getColumnIndexOrThrow(DatabaseHelper.COL_EXPIRY)
+                );
 
                 String itemDetails =
                         name +
